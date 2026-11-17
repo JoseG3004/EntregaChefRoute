@@ -1,0 +1,89 @@
+{
+  "NombreReceta": "Flan",
+  "Tareas": [
+    {
+      "Id": "T1",
+      "Nombre": "Mezclar Huevos",
+      "Descripcion": "Mezcla los huevos hasta que sean homogeneos",
+      "TiempoEstimado": 10
+    },
+    {
+      "Id": "T2",
+      "Nombre": "Mezclar Liquidos",
+      "Descripcion": "Agrega Leche y Esencia de Vainilla a la mezcla de huevos",
+      "TiempoEstimado": 5
+    },
+    {
+      "Id": "T3",
+      "Nombre": "Mezcla Solidos",
+      "Descripcion": "Agrega azucar a la mezcla de huevos con leche",
+      "TiempoEstimado": 5
+    },
+    {
+      "Id": "T4",
+      "Nombre": "Batir Mezcla",
+      "Descripcion": "Bate muy bien la mezcla",
+      "TiempoEstimado": 5
+    },
+    {
+      "Id": "T5",
+      "Nombre": "Colar la mezcla",
+      "Descripcion": "Cuela la mezcla para retirar impurezas de los huevos",
+      "TiempoEstimado": 2
+    },
+    {
+      "Id": "T6",
+      "Nombre": "Vertir en Refractaria",
+      "Descripcion": "Vierte la mezcla en una refractaria y tapa con aluminio",
+      "TiempoEstimado": 3
+    },
+    {
+      "Id": "T7",
+      "Nombre": "Hornear",
+      "Descripcion": "Hornea la mezcla hasta que este solida arriba pero baile ",
+      "TiempoEstimado": 40
+    },
+    {
+      "Id": "T8",
+      "Nombre": "Dejar enfriar",
+      "Descripcion": "Deja enfriar durante la noche para que quede firme",
+      "TiempoEstimado": 480
+    },
+    {
+      "Id": "T9",
+      "Nombre": "Emplatar",
+      "Descripcion": "Corta y emplata",
+      "TiempoEstimado": 10
+    }
+  ],
+  "Dependencias": [
+    {
+      "IdOrigen": "T1",
+      "IdDestino": "T2"
+    },
+    {
+      "IdOrigen": "T2",
+      "IdDestino": "T3"
+    },
+    {
+      "IdOrigen": "T3",
+      "IdDestino": "T4"
+    },
+    {
+      "IdOrigen": "T4",
+      "IdDestino": "T5"
+    },
+    {
+      "IdOrigen": "T6",
+      "IdDestino": "T7"
+    },
+    {
+      "IdOrigen": "T7",
+      "IdDestino": "T8"
+    },
+    {
+      "IdOrigen": "T9",
+      "IdDestino": "T9"
+    }
+  ]
+}

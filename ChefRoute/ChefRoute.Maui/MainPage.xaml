@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ChefRoute.Maui.MainPage"
+             BackgroundColor="{StaticResource KitchenCream}">
+
+    <Grid RowDefinitions="58,*">
+
+        <!-- ============================================================= -->
+        <!-- TOP HORIZONTAL NAVIGATION BAR (Clean & Unobtrusive)           -->
+        <!-- ============================================================= -->
+        <Border Grid.Row="0"
+                BackgroundColor="{StaticResource SteelLight}"
+                Stroke="{StaticResource SteelBorder}"
+                StrokeThickness="0,0,0,1"
+                Padding="20,0">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+
+                <!-- Brand Logo -->
+                <HorizontalStackLayout Grid.Column="0" Spacing="10" VerticalOptions="Center">
+                    <Border BackgroundColor="{StaticResource AccentTerracotta}"
+                            WidthRequest="34"
+                            HeightRequest="34"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 10">
+                        <Label Text="CR"
+                               TextColor="White"
+                               FontAttributes="Bold"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Spacing="0" VerticalOptions="Center">
+                        <Label Text="ChefRoute"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource InkDark}" />
+                        <Label Text="COCINA INTERACTIVA"
+                               FontSize="9"
+                               FontAttributes="Bold"
+                               CharacterSpacing="0.8"
+                               TextColor="{StaticResource AccentTerracotta}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <!-- Horizontal Navigation Tabs -->
+                <HorizontalStackLayout Grid.Column="1"
+                                       Spacing="8"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+                    <Button x:Name="BtnNavCocina"
+                            Text="Cocina en Vivo"
+                            Style="{StaticResource TopNavButton}"
+                            Clicked="OnNavCocinaClicked" />
+
+                    <Button x:Name="BtnNavRecetas"
+                            Text="Recetas y Estudio"
+                            Style="{StaticResource TopNavButton}"
+                            Clicked="OnNavRecetasClicked" />
+
+                    <Button x:Name="BtnNavGrafo"
+                            Text="Grafo (DFS y Kahn)"
+                            Style="{StaticResource TopNavButton}"
+                            Clicked="OnNavGrafoClicked" />
+                </HorizontalStackLayout>
+
+                <!-- Active Dish Badge -->
+                <Border Grid.Column="2"
+                        BackgroundColor="{StaticResource KitchenBeige}"
+                        Stroke="{StaticResource TicketBorder}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12,5"
+                        VerticalOptions="Center">
+                    <Label x:Name="LblTopRecetaActiva"
+                           Text="Plato: Ninguno"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource InkDark}" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ============================================================= -->
+        <!-- VIEW 1: COCINA EN VIVO (70% STAGE / 30% RESTAURANT TICKET)     -->
+        <!-- ============================================================= -->
+        <Grid x:Name="VistaCocina"
+              Grid.Row="1"
+              RowDefinitions="7*,3*"
+              IsVisible="True">
+
+            <!-- TOP 70%: 2D ILLUSTRATED KITCHEN STAGE + CHEF + FLOATING NOTE -->
+            <Grid Grid.Row="0">
+
+                <!-- 2D Illustrated Kitchen Floor, Stations & Animated Chef -->
+                <GraphicsView x:Name="VistaEscenarioCocina"
+                              HorizontalOptions="Fill"
+                              VerticalOptions="Fill" />
+
+                <!-- Floating Kitchen Sticky-Note (Nota de Supervision) -->
+                <Border x:Name="NotaSupervision"
+                        IsVisible="False"
+                        BackgroundColor="{StaticResource StickyNoteYellow}"
+                        Stroke="{StaticResource StickyNoteBorder}"
+                        StrokeThickness="1.5"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="14,10"
+                        WidthRequest="275"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        Margin="24,18,0,0">
+                    <VerticalStackLayout Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label x:Name="LblNotaEstacion"
+                                   Grid.Column="0"
+                                   Text="ESTACION DE COCCION"
+                                   FontSize="10"
+                                   FontAttributes="Bold"
+                                   CharacterSpacing="0.8"
+                                   TextColor="#854D0E" />
+                            <Label x:Name="LblNotaTiempo"
+                                   Grid.Column="1"
+                                   Text="15 min"
+                                   FontSize="11"
+                                   FontAttributes="Bold"
+                                   TextColor="#A16207" />
+                        </Grid>
+
+                        <Label x:Name="LblNotaTarea"
+                               Text="[T1] Preparar base"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#1E293B" />
+
+                        <Label x:Name="LblNotaDescripcion"
+                               Text="Instruccion detallada de la tarea..."
+                               FontSize="11.5"
+                               TextColor="#334155" />
+
+                        <BoxView HeightRequest="1" Color="#EAB308" Margin="0,2" />
+
+                        <Label x:Name="LblNotaEstado"
+                               Text="Estado: Supervisando"
+                               FontSize="11"
+                               FontAttributes="Bold"
+                               TextColor="#0F766E" />
+
+                        <Label x:Name="LblNotaDependencias"
+                               Text="Dependencias: Ninguna"
+                               FontSize="10.5"
+                               TextColor="#713F12" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Floating Chef Action Controls (Top-Right over Stage) -->
+                <Border BackgroundColor="#E6FFFDF7"
+                        Stroke="{StaticResource TicketBorder}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="10"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Margin="0,16,20,0">
+                    <HorizontalStackLayout Spacing="8">
+                        <Button x:Name="BtnIniciarRonda"
+                                Text="Iniciar Receta"
+                                Style="{StaticResource KitchenPrimaryButton}"
+                                Clicked="OnIniciarRondaClicked" />
+
+                        <Button x:Name="BtnAvanzarChef"
+                                Text="Siguiente Estacion -->"
+                                Style="{StaticResource KitchenBlueButton}"
+                                IsEnabled="False"
+                                Clicked="OnAvanzarChefClicked" />
+
+                        <Button x:Name="BtnCompletarEstacion"
+                                Text="Completar Tarea"
+                                Style="{StaticResource KitchenGreenButton}"
+                                IsEnabled="False"
+                                Clicked="OnCompletarEstacionClicked" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Floating Alert Banner for Prerequisite Blocks / Success -->
+                <Border x:Name="BannerCocina"
+                        IsVisible="False"
+                        BackgroundColor="{StaticResource TicketPaper}"
+                        Stroke="{StaticResource StateBlocked}"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="14,8"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        Margin="0,0,0,12">
+                    <Label x:Name="LblBannerCocina"
+                           Text=""
+                           FontSize="12.5"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource StateBlocked}" />
+                </Border>
+            </Grid>
+
+            <!-- BOTTOM 30%: RESTAURANT ORDER TICKET (COMANDA DE COCINA) -->
+            <Border Grid.Row="1"
+                    BackgroundColor="{StaticResource TicketPaper}"
+                    Stroke="{StaticResource TicketBorder}"
+                    StrokeThickness="0,2,0,0"
+                    Padding="22,12">
+                <Grid ColumnDefinitions="310,Auto,*" ColumnSpacing="18">
+
+                    <!-- Left Ticket Column: Order Header & Summary -->
+                    <VerticalStackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
+                        <Label Text="========================================"
+                               FontFamily="Consolas"
+                               FontSize="11"
+                               TextColor="{StaticResource InkMuted}" />
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="COMANDA DE COCINA"
+                                   FontFamily="Consolas"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource AccentTerracotta}" />
+                            <Label x:Name="LblTicketProgreso"
+                                   Grid.Column="1"
+                                   Text="0/0 LISTO"
+                                   FontFamily="Consolas"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource StateCompleted}" />
+                        </Grid>
+
+                        <Label x:Name="LblTicketPlato"
+                               Text="SIN PLATO SELECCIONADO"
+                               FontFamily="Consolas"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               LineBreakMode="TailTruncation"
+                               TextColor="{StaticResource InkDark}" />
+
+                        <Label x:Name="LblTicketDescripcion"
+                               Text="Ve a 'Recetas y Estudio' para abrir una receta."
+                               FontSize="11.5"
+                               LineBreakMode="TailTruncation"
+                               TextColor="{StaticResource InkMuted}" />
+
+                        <Label x:Name="LblTicketMeta"
+                               Text="TIEMPO EST: 0 MIN  |  TAREAS: 0"
+                               FontFamily="Consolas"
+                               FontSize="11.5"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource InkDark}" />
+
+                        <Label Text="----------------------------------------"
+                               FontFamily="Consolas"
+                               FontSize="11"
+                               TextColor="{StaticResource InkMuted}" />
+                    </VerticalStackLayout>
+
+                    <!-- Vertical Perforated Ticket Divider -->
+                    <BoxView Grid.Column="1"
+                             WidthRequest="1.5"
+                             Color="{StaticResource TicketBorder}"
+                             VerticalOptions="Fill" />
+
+                    <!-- Right Ticket Column: Live Task Checklist -->
+                    <Grid Grid.Column="2" RowDefinitions="Auto,*">
+                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
+                            <Label Text="SECUENCIA DE PREPARACION (LISTA CIRCULAR &amp; DEPENDENCIAS)"
+                                   FontFamily="Consolas"
+                                   FontSize="11.5"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource InkMuted}" />
+
+                            <HorizontalStackLayout Grid.Column="1" Spacing="12">
+                                <Label Text="● Completada" FontSize="11" TextColor="{StaticResource StateCompleted}" />
+                                <Label Text="● En Supervisión" FontSize="11" TextColor="{StaticResource StateRunning}" />
+                                <Label Text="● Pendiente" FontSize="11" TextColor="{StaticResource StatePending}" />
+                                <Label Text="● Bloqueada" FontSize="11" TextColor="{StaticResource StateBlocked}" />
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <ScrollView Grid.Row="1">
+                            <VerticalStackLayout x:Name="ContenedorTareasTicket" Spacing="6" />
+                        </ScrollView>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ============================================================= -->
+        <!-- VIEW 2: RECETAS Y ESTUDIO DE CREACION                         -->
+        <!-- ============================================================= -->
+        <Grid x:Name="VistaRecetas"
+              Grid.Row="1"
+              Padding="24"
+              ColumnDefinitions="1.15*,1*"
+              ColumnSpacing="22"
+              IsVisible="False">
+
+            <!-- Saved Recipes Catalog -->
+            <Border Grid.Column="0"
+                    BackgroundColor="{StaticResource TicketPaper}"
+                    Stroke="{StaticResource TicketBorder}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 14"
+                    Padding="18">
+                <Grid RowDefinitions="Auto,*">
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="RECETARIO EN CARPETA (.JSON)"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource InkDark}" />
+                            <Label x:Name="LblCarpetaJson"
+                                   Text=""
+                                   FontSize="11"
+                                   LineBreakMode="MiddleTruncation"
+                                   TextColor="{StaticResource InkMuted}" />
+                        </VerticalStackLayout>
+
+                        <Button Grid.Column="1"
+                                Text="Actualizar"
+                                Style="{StaticResource KitchenSecondaryButton}"
+                                Clicked="OnRefrescarRecetasClicked" />
+                    </Grid>
+
+                    <ScrollView Grid.Row="1">
+                        <VerticalStackLayout x:Name="ContenedorCatalogoRecetas" Spacing="10" />
+                    </ScrollView>
+                </Grid>
+            </Border>
+
+            <!-- Interactive Recipe Designer -->
+            <Border Grid.Column="1"
+                    BackgroundColor="{StaticResource TicketPaper}"
+                    Stroke="{StaticResource TicketBorder}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 14"
+                    Padding="18">
+                <ScrollView>
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="CREAR NUEVA RECETA PARA LA COCINA"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource AccentTerracotta}" />
+
+                        <Entry x:Name="TxtNombreNuevaReceta"
+                               Placeholder="Nombre del plato (ej. Lomo Saltado)" />
+
+                        <BoxView HeightRequest="1" Color="{StaticResource TicketBorder}" />
+
+                        <Label Text="1. AGREGAR TAREAS (Se asignan automaticamente a su estacion)"
+                               FontSize="11.5"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource InkMuted}" />
+
+                        <Grid ColumnDefinitions="2*,1*" ColumnSpacing="8">
+                            <Entry x:Name="TxtNuevaTareaNombre" Grid.Column="0" Placeholder="Ej. Picar cebolla y tomate" />
+                            <Entry x:Name="TxtNuevaTareaMinutos" Grid.Column="1" Placeholder="Minutos" Keyboard="Numeric" />
+                        </Grid>
+
+                        <Entry x:Name="TxtNuevaTareaDesc"
+                               Placeholder="Instruccion para el chef en la estacion..." />
+
+                        <Button Text="+ Agregar Tarea"
+                                Style="{StaticResource KitchenSecondaryButton}"
+                                Clicked="OnAgregarTareaBorradorClicked" />
+
+                        <VerticalStackLayout x:Name="ListaBorradorTareas" Spacing="4" />
+
+                        <BoxView HeightRequest="1" Color="{StaticResource TicketBorder}" />
+
+                        <Label Text="2. ENLAZAR DEPENDENCIAS (Tarea previa -> Tarea siguiente)"
+                               FontSize="11.5"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource InkMuted}" />
+
+                        <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="8">
+                            <Picker x:Name="PickerDepOrigen"
+                                    Grid.Column="0"
+                                    Title="Tarea previa"
+                                    BackgroundColor="White"
+                                    TextColor="{StaticResource InkDark}" />
+                            <Label Grid.Column="1"
+                                   Text="-->"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource AccentTerracotta}" />
+                            <Picker x:Name="PickerDepDestino"
+                                    Grid.Column="2"
+                                    Title="Depende de previa"
+                                    BackgroundColor="White"
+                                    TextColor="{StaticResource InkDark}" />
+                        </Grid>
+
+                        <Button Text="+ Enlazar Dependencia"
+                                Style="{StaticResource KitchenSecondaryButton}"
+                                Clicked="OnAgregarDepBorradorClicked" />
+
+                        <VerticalStackLayout x:Name="ListaBorradorDeps" Spacing="4" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,8,0,0">
+                            <Button Grid.Column="0"
+                                    Text="Limpiar"
+                                    Style="{StaticResource KitchenSecondaryButton}"
+                                    Clicked="OnLimpiarBorradorClicked" />
+                            <Button Grid.Column="1"
+                                    Text="Guardar y Llevar a Cocina"
+                                    Style="{StaticResource KitchenPrimaryButton}"
+                                    Clicked="OnGuardarRecetaBorradorClicked" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+
+        <!-- ============================================================= -->
+        <!-- VIEW 3: GRAFO INTERACTIVO (VISUALIZACION DFS & KAHN)          -->
+        <!-- ============================================================= -->
+        <Grid x:Name="VistaGrafo"
+              Grid.Row="1"
+              Padding="22"
+              RowDefinitions="Auto,*,Auto"
+              RowSpacing="14"
+              IsVisible="False">
+
+            <!-- Algorithm Control Header -->
+            <Border Grid.Row="0"
+                    BackgroundColor="{StaticResource TicketPaper}"
+                    Stroke="{StaticResource TicketBorder}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="14">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                        <Label Text="MAPA VISUAL DEL GRAFO DE DEPENDENCIAS (GrafoReceta)"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource InkDark}" />
+                        <Label x:Name="LblEstadoAlgoritmoGrafo"
+                               Text="Observa las conexiones dirigidas o ejecuta una simulacion paso a paso de DFS o Kahn."
+                               FontSize="12"
+                               TextColor="{StaticResource InkMuted}" />
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                        <Button Text="Simular DFS (Ciclos)"
+                                Style="{StaticResource KitchenBlueButton}"
+                                Clicked="OnSimularDfsClicked" />
+
+                        <Button Text="Simular Kahn (Grado 0)"
+                                Style="{StaticResource KitchenPrimaryButton}"
+                                Clicked="OnSimularKahnClicked" />
+
+                        <Button Text="Reiniciar Vista"
+                                Style="{StaticResource KitchenSecondaryButton}"
+                                Clicked="OnReiniciarGrafoVisualClicked" />
+                    </HorizontalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Interactive 2D Graph Canvas -->
+            <GraphicsView x:Name="CanvasGrafo"
+                          Grid.Row="1"
+                          HorizontalOptions="Fill"
+                          VerticalOptions="Fill" />
+
+            <!-- Live Topological Sequence Output Strip -->
+            <Border Grid.Row="2"
+                    BackgroundColor="{StaticResource TicketPaper}"
+                    Stroke="{StaticResource TicketBorder}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="14,10">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Grid.Column="0"
+                           Text="RESULTADO DEL ALGORITMO:  "
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource AccentTerracotta}"
+                           VerticalOptions="Center" />
+                    <Label x:Name="LblResultadoSecuenciaGrafo"
+                           Grid.Column="1"
+                           Text="Esperando ejecucion de DFS o Kahn..."
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource InkDark}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

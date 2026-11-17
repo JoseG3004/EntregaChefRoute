@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ChefRoute.Maui/ChefRoute.Maui.csproj" />
+  <Project Path="Consola/Consola.csproj" />
+  <Project Path="Core/Core.csproj" />
+  <Project Path="Infraestructura/Infraestructura.csproj" />
+</Solution>

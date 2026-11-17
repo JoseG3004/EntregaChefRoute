@@ -1,0 +1,73 @@
+﻿{
+  "NombreReceta": "Bandeja Paisa Tradicional",
+  "Tareas": [
+    {
+      "Id": "T1",
+      "Nombre": "Picar tomate y cebolla",
+      "Descripcion": "Cortar en brunoise fina para la base del hogao",
+      "TiempoEstimado": 8
+    },
+    {
+      "Id": "T2",
+      "Nombre": "Sofreir hogao",
+      "Descripcion": "Cocinar tomate, cebolla, ajo y comino a fuego bajo",
+      "TiempoEstimado": 12
+    },
+    {
+      "Id": "T3",
+      "Nombre": "Cocinar frijoles cargamanto",
+      "Descripcion": "Pitar frijoles previamente remojados con platano verde",
+      "TiempoEstimado": 35
+    },
+    {
+      "Id": "T4",
+      "Nombre": "Preparar arroz blanco",
+      "Descripcion": "Nacarar arroz con aceite y sal, cocinar hasta secar",
+      "TiempoEstimado": 20
+    },
+    {
+      "Id": "T5",
+      "Nombre": "Freir chicharron y carne molida",
+      "Descripcion": "Dorar el chicharron crocante y sazonar la carne en polvo",
+      "TiempoEstimado": 18
+    },
+    {
+      "Id": "T6",
+      "Nombre": "Freir huevo y tajadas de maduro",
+      "Descripcion": "Preparar acompanamientos frescos justo antes de servir",
+      "TiempoEstimado": 7
+    },
+    {
+      "Id": "T7",
+      "Nombre": "Emplatar Bandeja Paisa",
+      "Descripcion": "Servir frijoles con hogao, arroz, carnes, huevo, tajadas, aguacate y arepa",
+      "TiempoEstimado": 5
+    }
+  ],
+  "Dependencias": [
+    {
+      "IdOrigen": "T1",
+      "IdDestino": "T2"
+    },
+    {
+      "IdOrigen": "T2",
+      "IdDestino": "T3"
+    },
+    {
+      "IdOrigen": "T3",
+      "IdDestino": "T7"
+    },
+    {
+      "IdOrigen": "T4",
+      "IdDestino": "T7"
+    },
+    {
+      "IdOrigen": "T5",
+      "IdDestino": "T7"
+    },
+    {
+      "IdOrigen": "T6",
+      "IdDestino": "T7"
+    }
+  ]
+}

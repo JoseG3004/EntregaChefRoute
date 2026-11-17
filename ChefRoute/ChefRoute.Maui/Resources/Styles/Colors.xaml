@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Warm & Bright Culinary Kitchen Palette -->
+    <Color x:Key="KitchenCream">#F7F3EB</Color>
+    <Color x:Key="KitchenBeige">#EDE5D5</Color>
+    <Color x:Key="SteelLight">#F8FAFC</Color>
+    <Color x:Key="SteelBorder">#CBD5E1</Color>
+    <Color x:Key="WoodWarm">#C89666</Color>
+    <Color x:Key="TicketPaper">#FFFDF7</Color>
+    <Color x:Key="TicketBorder">#D6CFC2</Color>
+    <Color x:Key="StickyNoteYellow">#FEF08A</Color>
+    <Color x:Key="StickyNoteBorder">#EAB308</Color>
+
+    <Color x:Key="AccentTerracotta">#E07A5F</Color>
+    <Color x:Key="AccentTomato">#E63946</Color>
+    <Color x:Key="AccentHerbGreen">#2A9D8F</Color>
+
+    <Color x:Key="InkDark">#1E293B</Color>
+    <Color x:Key="InkMuted">#64748B</Color>
+
+    <!-- Required State Colors: Green=Completed, Blue=Running, Yellow=Pending, Red=Blocked/Error -->
+    <Color x:Key="StateCompleted">#16A34A</Color>
+    <Color x:Key="StateRunning">#2563EB</Color>
+    <Color x:Key="StatePending">#D97706</Color>
+    <Color x:Key="StateBlocked">#DC2626</Color>
+
+    <Color x:Key="White">#FFFFFF</Color>
+
+</ResourceDictionary>

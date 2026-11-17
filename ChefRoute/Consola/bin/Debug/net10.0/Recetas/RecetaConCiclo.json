@@ -1,0 +1,37 @@
+{
+  "NombreReceta": "Postre Imposible (Dependencia Circular)",
+  "Tareas": [
+    {
+      "Id": "C1",
+      "Nombre": "Montar crema chantilly",
+      "Descripcion": "Batir crema de leche fria hasta punto de nieve",
+      "TiempoEstimado": 10
+    },
+    {
+      "Id": "C2",
+      "Nombre": "Incorporar cobertura",
+      "Descripcion": "Mezclar de forma envolvente con la base",
+      "TiempoEstimado": 5
+    },
+    {
+      "Id": "C3",
+      "Nombre": "Preparar base de galleta",
+      "Descripcion": "Triturar galletas y compactar en molde",
+      "TiempoEstimado": 8
+    }
+  ],
+  "Dependencias": [
+    {
+      "IdOrigen": "C1",
+      "IdDestino": "C2"
+    },
+    {
+      "IdOrigen": "C2",
+      "IdDestino": "C3"
+    },
+    {
+      "IdOrigen": "C3",
+      "IdDestino": "C1"
+    }
+  ]
+}
